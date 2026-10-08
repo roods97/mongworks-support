@@ -15,24 +15,25 @@
 <style>
   :root {
     --graphite-900: #171B1F;
-    --graphite-700: #3A4048;
-    --graphite-400: #9CA3AF;
+    --graphite-600: #4B525B;
+    --graphite-500: #6B7280;
     --steel-300: #C7CCD1;
+    --steel-100: #EDEFF1;
     --chalk: #FFFFFF;
     --lime: #B4F01E;
     --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
   *, *::before, *::after { box-sizing: border-box; }
-  html { background: var(--graphite-900); }
+  html { background: var(--steel-100); }
   body {
     margin: 0; min-height: 100vh;
     font-family: var(--font); font-size: 15px; line-height: 1.6;
-    background: var(--graphite-900); color: var(--chalk);
+    background: var(--steel-100); color: var(--graphite-900);
     -webkit-font-smoothing: antialiased;
     display: flex; flex-direction: column;
   }
   img { max-width: 100%; height: auto; display: block; }
-  a { color: var(--chalk); text-underline-offset: 3px; }
+  a { color: var(--graphite-900); text-underline-offset: 3px; }
   h1 { margin: 0; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
   p { margin: 0; }
   :focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
@@ -45,16 +46,16 @@
   }
   .roundel {
     width: clamp(104px, 24vw, 150px); margin-inline: auto;
-    filter: drop-shadow(0 14px 28px rgba(0,0,0,0.6));
+    filter: drop-shadow(0 12px 24px rgba(23,27,31,0.22));
   }
   h1 { margin-top: 32px; font-size: clamp(30px, 7vw, 48px); line-height: 1.1; }
-  .lead { margin-top: 20px; color: var(--steel-300); font-size: clamp(15px, 2.2vw, 17px); }
-  .after { margin-top: 18px; color: var(--graphite-400); font-size: 14.5px; }
+  .lead { margin-top: 20px; color: var(--graphite-600); font-size: clamp(15px, 2.2vw, 17px); }
+  .after { margin-top: 18px; color: var(--graphite-500); font-size: 14.5px; }
   .back { margin-top: 40px; font-size: 13px; }
 
   footer {
-    border-top: 1px solid var(--graphite-700);
-    padding-block: 28px; color: var(--graphite-400); font-size: 13px; text-align: center;
+    border-top: 1px solid var(--steel-300);
+    padding-block: 28px; color: var(--graphite-500); font-size: 13px; text-align: center;
   }
 </style>
 </head>
