@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>You're in — MongWorks</title>
+<meta name="description" content="The rat has your address. Nothing from us until there's something to download.">
+<!-- Nothing here should be indexed or shared: it is only reachable after a signup. -->
+<meta name="robots" content="noindex">
+
+<link rel="icon" href="../assets/rat.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
+
+<style>
+  :root {
+    --graphite-900: #171B1F;
+    --graphite-700: #3A4048;
+    --graphite-400: #9CA3AF;
+    --steel-300: #C7CCD1;
+    --chalk: #FFFFFF;
+    --lime: #B4F01E;
+    --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--graphite-900); }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: var(--font); font-size: 15px; line-height: 1.6;
+    background: var(--graphite-900); color: var(--chalk);
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: var(--chalk); text-underline-offset: 3px; }
+  h1 { margin: 0; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
+  p { margin: 0; }
+  :focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+
+  main {
+    flex: 1;
+    width: 100%; max-width: 620px; margin-inline: auto;
+    padding-inline: 20px; padding-block: clamp(56px, 12vw, 110px) 40px;
+    text-align: center;
+  }
+  .roundel {
+    width: clamp(104px, 24vw, 150px); margin-inline: auto;
+    filter: drop-shadow(0 14px 28px rgba(0,0,0,0.6));
+  }
+  h1 { margin-top: 32px; font-size: clamp(30px, 7vw, 48px); line-height: 1.1; }
+  .lead { margin-top: 20px; color: var(--steel-300); font-size: clamp(15px, 2.2vw, 17px); }
+  .after { margin-top: 18px; color: var(--graphite-400); font-size: 14.5px; }
+  .back { margin-top: 40px; font-size: 13px; }
+
+  footer {
+    border-top: 1px solid var(--graphite-700);
+    padding-block: 28px; color: var(--graphite-400); font-size: 13px; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <img class="roundel" src="../assets/rat.png" alt="The MongWorks mechanic rat" width="420" height="420">
+  <h1>You're in.</h1>
+  <p class="lead">The rat has your address, and he's filed it somewhere safe.</p>
+  <p class="after">Nothing from us until there's something to download.</p>
+  <p class="back"><a href="../">Back to MongWorks</a></p>
+</main>
+
+<footer>
+  <p><a href="../privacy/">Privacy &amp; support</a> · © 2026 Mong Rat</p>
+</footer>
+
+</body>
+</html>

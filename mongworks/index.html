@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MongWorks — know what your bike needs before it needs it</title>
+<meta name="description" content="MongWorks tracks every part on your bike, projects wear from your Strava rides and the weather you rode in, and tells you what to service — before a worn chain takes your cassette with it.">
+<link rel="canonical" href="https://roods97.github.io/mongworks-support/mongworks/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mong Rat">
+<meta property="og:title" content="A rat has taken an interest in your drivetrain.">
+<meta property="og:description" content="Know what your bike needs before it needs it.">
+<meta property="og:url" content="https://roods97.github.io/mongworks-support/mongworks/">
+<meta property="og:image" content="https://roods97.github.io/mongworks-support/mongworks/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/rat.png">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
+
+<style>
+  /* Graphite & Lime — the app's own tokens (tailwind.config.js). The page commits to
+     the dark world deliberately: the workshop illustration is white line art with a
+     genuinely transparent centre, so it only reads on a dark ground. */
+  :root {
+    --graphite-900: #171B1F;
+    --graphite-800: #1E242A;
+    --graphite-700: #3A4048;
+    --graphite-600: #4B525B;
+    --graphite-500: #6B7280;
+    --graphite-400: #9CA3AF;
+    --steel-300: #C7CCD1;
+    --chalk: #FFFFFF;
+    --lime: #B4F01E;
+    --lime-dark: #5D7A0E;
+    --flag: #B45309;
+    --flag-bg: #FFFBEB;
+    --flag-border: #FCD34D;
+    --r-sm: 4px;
+    --r-md: 8px;
+    --r-lg: 16px;
+    --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--graphite-900); }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: 15px;
+    line-height: 1.6;
+    background: var(--graphite-900);
+    color: var(--chalk);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  a { color: inherit; }
+  h1, h2 { margin: 0; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
+  p { margin: 0; }
+  :focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+
+  .wrap { width: 100%; max-width: 1080px; margin-inline: auto; padding-inline: 20px; }
+  .narrow { max-width: 680px; }
+
+  /* ---- hero ---- */
+  .hero-art {
+    position: relative;
+    width: 100%; max-width: 1100px; margin-inline: auto;
+    aspect-ratio: 1100 / 733;
+  }
+  .hero-art .scene {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+  }
+  .hero-art::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 42%;
+    background: linear-gradient(to bottom, rgba(23,27,31,0) 0%, rgba(23,27,31,0.88) 62%, var(--graphite-900) 100%);
+  }
+  .roundel {
+    position: absolute; left: 50%; top: 27%; transform: translate(-50%, -50%);
+    width: clamp(88px, 18vw, 140px); z-index: 2;
+    filter: drop-shadow(0 14px 28px rgba(0,0,0,0.7));
+  }
+
+  /* ---- the bike reel ----
+     Plays by itself and takes no input: pointer-events: none makes that literal.
+     Frames sit side by side and the track slides a page at a time, so it reads as
+     someone swiping the app's Garage rather than as a cross-fade. Scaled like the
+     app's Bike Card, where the art spans the full width of its diagram box. */
+  .reel {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    width: min(88%, 520px); bottom: 12%; z-index: 2;
+    pointer-events: none;
+  }
+  .reel-viewport { overflow: hidden; }
+  .reel-track { display: flex; transition: transform 580ms cubic-bezier(0.22, 1, 0.36, 1); }
+  /* Suppressed for the single frame where the loop jumps off the trailing clone back
+     to the real first bike — without it, the loop visibly rewinds. */
+  .reel-track[data-snap] { transition: none; }
+  .reel-frame { flex: 0 0 100%; display: grid; place-items: center; }
+  .reel-frame img { width: 100%; }
+  .reel-label {
+    text-align: center; margin-top: 12px;
+    color: var(--graphite-400);
+    font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+
+  .hero-copy {
+    margin-top: -5vw; position: relative; z-index: 3;
+    text-align: center; padding-bottom: 56px;
+  }
+  h1 { font-size: clamp(29px, 6.6vw, 56px); line-height: 1.1; }
+  .sub { margin-top: 20px; color: var(--steel-300); font-size: clamp(15px, 2.1vw, 17px); line-height: 1.65; }
+  /* The Strava prerequisite, set as a literal mono tree branch. */
+  .strava-line {
+    margin-top: 18px; color: var(--graphite-400);
+    font-size: 13.5px; line-height: 1.55;
+    display: grid; grid-template-columns: auto 1fr; gap: 0 8px;
+    max-width: 560px; margin-inline: auto; text-align: left;
+  }
+  .strava-line b { font-weight: 400; color: var(--lime); }
+
+  /* ---- features ---- */
+  .feat {
+    position: relative;
+    border-top: 1px solid var(--graphite-700);
+    padding-block: 44px;
+  }
+  /* The order is a ranked sequence, not an arbitrary list — money, then the AI
+     mechanic, then history, then local — so numbering it states something true. */
+  .rank {
+    position: absolute; right: 0; top: 26px;
+    font-size: clamp(48px, 8.5vw, 76px); font-weight: 700; line-height: 1;
+    color: var(--graphite-700); font-variant-numeric: tabular-nums;
+    user-select: none; pointer-events: none;
+  }
+  .feat h2, .feat p { position: relative; }
+  .feat h2 { font-size: clamp(21px, 3.4vw, 28px); line-height: 1.22; max-width: 24ch; }
+  .feat p { margin-top: 14px; color: var(--steel-300); max-width: 66ch; }
+  .chip {
+    display: inline-block; margin-bottom: 10px;
+    background: var(--lime); color: var(--graphite-900);
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: var(--r-sm);
+  }
+
+  /* ---- signup ---- */
+  .signup { border-top: 1px solid var(--graphite-700); padding-block: 56px; }
+  .signup-inner {
+    border: 1px solid var(--graphite-700); border-radius: var(--r-lg);
+    padding: 28px 24px; background: var(--graphite-800);
+  }
+  .signup h2 { font-size: clamp(20px, 3vw, 26px); }
+  .signup p { margin-top: 12px; color: var(--steel-300); font-size: 14.5px; }
+  .form { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .form input[type="email"] {
+    flex: 1 1 240px; min-width: 0;
+    font: inherit; font-size: 15px; padding: 13px 14px;
+    border-radius: var(--r-md); border: 1px solid var(--steel-300);
+    background: var(--chalk); color: var(--graphite-900);
+  }
+  .form input[type="email"]::placeholder { color: var(--graphite-400); }
+  .form button {
+    font: inherit; font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+    padding: 13px 22px; border: 0; border-radius: var(--r-md);
+    background: var(--lime); color: var(--graphite-900); cursor: pointer;
+  }
+  .form button:hover { filter: brightness(1.08); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  /* Filled in and revealed by the script from ?signup=. See the note on it below. */
+  #signup-error {
+    display: none;
+    grid-template-columns: auto 1fr; gap: 10px; align-items: start;
+    background: var(--flag-bg); border: 1px solid var(--flag-border);
+    border-left: 4px solid var(--flag); border-radius: var(--r-md);
+    color: var(--flag); font-size: 13.5px; line-height: 1.5;
+    padding: 12px 14px; margin-bottom: 16px;
+  }
+  #signup-error[data-shown] { display: grid; }
+  #signup-error svg { width: 18px; height: 18px; margin-top: 2px; }
+
+  /* ---- footer ---- */
+  footer {
+    border-top: 1px solid var(--graphite-700); padding-block: 36px 56px;
+    color: var(--graphite-400); font-size: 13px;
+    display: grid; gap: 14px;
+  }
+  footer a { color: var(--chalk); text-underline-offset: 3px; }
+  .powered {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    border: 1px solid currentColor; border-radius: var(--r-sm);
+    padding: 4px 9px; opacity: 0.85;
+  }
+
+  /* A full-width bike needs more height than the 3:2 artwork gives at phone widths —
+     at 390px it is barely 260px tall and collides with the roundel. Crop the outer
+     tool columns to buy the room, and lift the roundel. */
+  @media (max-width: 760px) {
+    .hero-art { aspect-ratio: 1 / 1; }
+    .roundel { top: 15%; width: clamp(72px, 16vw, 104px); }
+    .reel { width: min(94%, 460px); bottom: 9%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reel-track { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <header class="hero">
+    <div class="hero-art">
+      <img class="scene" src="assets/workshop.png" alt="" width="1100" height="733">
+      <img class="roundel" src="assets/rat.png" alt="The MongWorks mechanic rat" width="420" height="420">
+      <!-- Decorative and non-interactive, so it is hidden from assistive tech: the hero
+           text already says what MongWorks does, and a loop announced frame by frame is
+           noise. The track sits at translateX(0) until the script moves it, so with no
+           JavaScript the first bike is simply there. -->
+      <div class="reel" aria-hidden="true">
+        <div class="reel-viewport">
+          <!-- The last frame clones the first, so the loop always slides forwards and
+               then jumps back invisibly. -->
+          <div class="reel-track" id="reel-track">
+            <div class="reel-frame"><img src="assets/bike-gravel.png" alt="" width="420" height="261"></div>
+            <div class="reel-frame"><img src="assets/bike-road.png" alt="" width="420" height="262"></div>
+            <div class="reel-frame"><img src="assets/bike-mountain-full-suspension.png" alt="" width="420" height="263"></div>
+            <div class="reel-frame"><img src="assets/bike-gravel.png" alt="" width="420" height="261"></div>
+          </div>
+        </div>
+        <p class="reel-label">Whatever you ride</p>
+      </div>
+    </div>
+
+    <div class="wrap narrow hero-copy">
+      <h1>A rat has taken an interest in your drivetrain.</h1>
+      <p class="sub">MongWorks tracks every part on your bike, projects wear from your Strava rides and the weather you rode in, and tells you what to service — before a worn chain takes your cassette with it.</p>
+      <p class="strava-line"><b>&#x2514;&#x2500;</b><span>Needs a Strava account. That's where the kilometres come from — there's no manual odometer to fill in.</span></p>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section class="feat">
+      <span class="rank" aria-hidden="true">01</span>
+      <h2>Saves you money</h2>
+      <p>MongWorks works out how worn every part actually is — projected from your Strava kilometres, the weather you rode in, and how much climbing you did — and tells you what's due before it damages something else. Then it compares prices across retailers so you're not overpaying for the replacement.</p>
+    </section>
+
+    <section class="feat">
+      <span class="rank" aria-hidden="true">02</span>
+      <span class="chip">In development</span>
+      <h2>An AI mechanic that knows your bike</h2>
+      <p>Describe what your bike is doing — the noise, the feel, when it started — and get a diagnosis from something that already knows every part on it, how old each one is, and how hard you've been riding.</p>
+    </section>
+
+    <section class="feat">
+      <span class="rank" aria-hidden="true">03</span>
+      <h2>A service history that's worth money</h2>
+      <p>Every chain, cassette and set of pads you replace gets logged against the bike, with the date. When you sell it, the history goes with it — a documented bike is a bike you can ask more for.</p>
+    </section>
+
+    <section class="feat">
+      <span class="rank" aria-hidden="true">04</span>
+      <span class="chip">In development</span>
+      <h2>Finds you a local mechanic</h2>
+      <p>Not every job is one you want to do on your kitchen floor. For the ones that aren't, MongWorks points you at a bike shop nearby that can take it on.</p>
+    </section>
+
+    <section class="signup">
+      <div class="signup-inner">
+        <p id="signup-error" role="alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16.5v.01"/></svg>
+          <span id="signup-error-text"></span>
+        </p>
+        <h2>Know when it's ready</h2>
+        <p>There's no launch date to promise — MongWorks isn't finished. Leave your email and the rat will send you one message, on the day there's something to download. Nothing else, ever.</p>
+        <form class="form" method="post" action="https://ognbricfmqkoubxmbwst.supabase.co/functions/v1/waitlist-signup">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" name="email" required placeholder="your@email.com" autocomplete="email">
+          <!-- Honeypot. Half the spam defence — do not remove. Plausible label, out of sight. -->
+          <div class="sr-only" aria-hidden="true">
+            <label for="website">Website</label>
+            <input id="website" type="text" name="website" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="source" value="mongworks-landing">
+          <button type="submit">Release the rat</button>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <p><a href="privacy/">Privacy &amp; support</a> · <a href="../">Mong Rat</a></p>
+      <p>MongWorks is a Mong Rat product. The rat is not available for private consultation.</p>
+      <p><span class="powered">Powered by Strava</span> · © 2026 Mong Rat</p>
+    </footer>
+  </div>
+</main>
+
+<script>
+  (function () {
+    'use strict';
+
+    /* Signup errors.
+       The form is plain HTML and posts without JavaScript. What JavaScript does here is
+       read the reason the function redirects back with and say what went wrong — GitHub
+       Pages serves static files and cannot read a query string, so this is the only way
+       to explain a failure short of one static page per reason.
+
+       Degrades honestly: with JavaScript off the form still submits and still stores the
+       address; the visitor just isn't told why a failure failed. `required` and
+       `type="email"` are HTML validation rather than script, so `missing` and `malformed`
+       are caught by the browser before the POST either way. */
+    var MESSAGES = {
+      missing: "You'll need to put an email address in the box first.",
+      malformed: "That doesn't look like an email address. Check it and try again.",
+      'too-long': 'That address is longer than we can store. If it’s genuinely that long, get in touch from the support page.',
+      'rate-limited': "That's a few sign-ups from here in a short space of time. Give it an hour and try again.",
+      error: 'That didn’t go through. Try again — or get in touch from the support page if it keeps happening.'
+    };
+
+    var reason = new URLSearchParams(window.location.search).get('signup');
+    var message = Object.prototype.hasOwnProperty.call(MESSAGES, reason) ? MESSAGES[reason] : null;
+    if (message) {
+      document.getElementById('signup-error-text').textContent = message;
+      document.getElementById('signup-error').setAttribute('data-shown', '');
+    }
+
+    /* The bike reel. Slides one bike at a time on a timer so it looks like someone
+       swiping the Garage; it takes no input at all. */
+    var SLIDE = 580;    // must match the CSS transition on .reel-track
+    var DWELL = 2600;   // how long each bike holds before the next slide
+    var track = document.getElementById('reel-track');
+    var lastReal = track.children.length - 1;   // the final child clones the first
+    var at = 0;
+    var tick = null;
+    var snap = null;
+
+    function paint() {
+      track.style.transform = 'translateX(' + (-at * 100) + '%)';
+    }
+
+    function advance() {
+      at += 1;
+      paint();
+      if (at < lastReal) return;
+      // Sitting on the clone, which looks identical to the first frame — so once the
+      // slide finishes, jump back to the real first frame with the transition off. The
+      // reflow re-arms it for the next slide.
+      snap = window.setTimeout(function () {
+        track.setAttribute('data-snap', '');
+        at = 0;
+        paint();
+        void track.offsetWidth;
+        track.removeAttribute('data-snap');
+      }, SLIDE);
+    }
+
+    function stop() {
+      window.clearInterval(tick); tick = null;
+      window.clearTimeout(snap); snap = null;
+    }
+
+    function play() {
+      stop();
+      // Reduced motion holds the first bike: a looping slide is exactly the ambient
+      // movement that setting asks pages to drop.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      tick = window.setInterval(advance, DWELL);
+    }
+
+    // Don't run a loop nobody can see.
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) stop(); else play();
+    });
+
+    play();
+  })();
+</script>
+
+</body>
+</html>
