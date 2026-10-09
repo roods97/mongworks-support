@@ -1,96 +1,326 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-AU">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MongWorks — Privacy &amp; Support</title>
+<meta name="description" content="What MongWorks collects, why, who stores it, and how to ask for it back — plus how to get help.">
+
+<!--
+  Deliberately indexable, unlike the welcome page and the thanks page. This URL is cited
+  in a live Strava athlete-capacity review submission and is destined for the Play
+  Console listing and Data Safety form, so it is a document under review: changes to it
+  are additive only, and no existing disclosure gets removed or weakened. The title is
+  held verbatim for the same reason — it is the string the Strava submission names.
+-->
+
+<!-- The one page here with a canonical of its own: the root's canonical points at this
+     URL, and the cutover is pending, so the page that most needs to name its preferred
+     address is this one. Absolute rather than relative, because the point is to say
+     *which host* owns the document. Ticket 08 swaps it to the custom domain with the
+     DNS change, same as the welcome page's. -->
+<link rel="canonical" href="https://roods97.github.io/mongworks-support/mongworks/privacy/">
+
+<link rel="icon" href="../assets/rat.webp">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
+
 <style>
-  :root { color-scheme: light dark; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 4rem;
-    line-height: 1.6;
-    color: #1c1f22;
-    background: #f4f5f6;
+  /* Graphite & Lime — the app's own tokens, same seven semantic roles as the welcome
+     page, so the policy reads as part of the product rather than as a legal annex
+     someone bolted on. This is long-form prose, so the column is narrower and the
+     type a touch larger than the welcome page's. */
+  :root {
+    --graphite-900: #171B1F;
+    --graphite-600: #4B525B;
+    --steel-300: #C7CCD1;
+    --steel-200: #DDE1E4;
+    --steel-100: #EDEFF1;
+    --chalk: #FFFFFF;
+    --lime: #B4F01E;
+    --lime-dark: #5D7A0E;
+    --r-sm: 4px;
+    --r-md: 8px;
+    --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --ground:    var(--steel-100);
+    --ink:       var(--graphite-900);
+    --ink-soft:  var(--graphite-600);
+    --rule:      var(--steel-300);
+    --panel:     var(--chalk);
+    --ghost:     var(--steel-200);
   }
-  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
-  h2 { font-size: 1.2rem; margin-top: 2.5rem; border-top: 1px solid #d8dadd; padding-top: 1.5rem; }
-  .subtitle { color: #5a6066; margin-top: 0; }
-  ul { padding-left: 1.25rem; }
-  a { color: #c04a1e; }
-  code { background: #e9eaec; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.9em; }
-  .footer { margin-top: 3rem; font-size: 0.85rem; color: #767c82; }
+  /* No --ink-faint role here, unlike the welcome page. Its graphite-500 is 4.2:1 on
+     this ground, which is under 4.5:1 and too small for the large-text exemption —
+     and every faint thing on this page is 11-13px. A marketing page can spend
+     legibility on hierarchy; a policy someone has to be able to read cannot, so the
+     soft role (6.8:1) carries the small type instead. */
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--ground); }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: var(--font); font-size: 15.5px; line-height: 1.65;
+    background: var(--ground); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h1, h2 { margin: 0; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance; }
+  p, ul { margin: 0; }
+  :focus-visible { outline: 3px solid var(--lime); outline-offset: 2px; }
+
+  /* Ink text with a lime-dark underline, rather than lime-dark text. The accent at
+     body size on this ground is 4.3:1 — fine for a rule, short of 4.5:1 for type —
+     so the colour goes in the decoration and the contrast stays in the glyphs. */
+  a {
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: var(--lime-dark);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  a:hover { text-decoration-color: var(--ink); }
+
+  main {
+    flex: 1;
+    width: 100%; max-width: 680px; margin-inline: auto;
+    padding-inline: 20px; padding-block: clamp(44px, 9vw, 72px) 56px;
+  }
+
+  /* One label shape, used three times — the masthead kicker, the panel heading and the
+     Strava mark. They were three copies with arbitrarily different sizes and tracking;
+     nothing justified the splits, so they share one rule and differ only where they
+     have a reason to. */
+  .label {
+    color: var(--ink-soft);
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+
+  .masthead { text-align: center; }
+  .roundel {
+    width: clamp(68px, 15vw, 88px); margin-inline: auto;
+    filter: drop-shadow(0 12px 24px rgba(23,27,31,0.22));
+  }
+  h1 { margin-top: 24px; font-size: clamp(27px, 5.6vw, 40px); line-height: 1.12; }
+  .masthead .label { margin-top: 12px; }
+  .lead { margin-top: 28px; color: var(--ink-soft); }
+
+  /* Sections are ruled off the way the welcome page's feature rows are. */
+  section { border-top: 1px solid var(--rule); margin-top: 40px; padding-top: 32px; }
+  h2 { font-size: clamp(19px, 3vw, 23px); line-height: 1.25; }
+  section > * + p, section > * + ul { margin-top: 16px; }
+  ul { padding-left: 1.2em; }
+  li { margin-top: 10px; }
+  li:first-child { margin-top: 0; }
+  code {
+    background: var(--ghost); border-radius: var(--r-sm);
+    padding: 0.1em 0.35em; font-size: 0.9em;
+  }
+
+  /* A raised panel for the one instruction a visitor comes here to act on: how to get
+     off the mailing list. Deliberately singular — the support and deletion routes are
+     already a mailto in their own prose, and a panel that only restates the sentence
+     above it is furniture. */
+  .action {
+    margin-top: 20px; background: var(--panel);
+    border: 1px solid var(--rule); border-radius: var(--r-md);
+    padding: 18px 20px;
+  }
+  .action p + p { margin-top: 12px; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-block: 28px 48px;
+    color: var(--ink-soft); font-size: 13px; text-align: center;
+  }
+  footer p + p { margin-top: 10px; }
+  .powered {
+    display: inline-block;
+    border: 1px solid currentColor; border-radius: var(--r-sm);
+    padding: 4px 9px;
+  }
 </style>
 </head>
 <body>
 
-<h1>MongWorks</h1>
-<p class="subtitle">Privacy, data, and support information</p>
+<main>
 
-<p>
-  MongWorks is a preventative bike-maintenance app. It projects a bike's
-  component wear from a member's real riding data via Strava, and prompts
-  service at the right time.
-</p>
+  <div class="masthead">
+    <img class="roundel" src="../assets/rat.webp" alt="The MongWorks mechanic rat" width="420" height="420">
+    <h1>Privacy &amp; support</h1>
+    <p class="label">MongWorks</p>
+  </div>
 
-<h2>Data we collect</h2>
-<p>To do this, MongWorks collects and stores:</p>
-<ul>
-  <li>
-    <strong>Strava data</strong> — via Strava's OAuth connection (scope
-    <code>profile:read_all</code>, <code>activity:read_all</code>), we read
-    your ride/activity data (distance, elevation, timing, and location of
-    rides) and your registered gear (bike names), used to attribute wear to
-    the correct bike.
-  </li>
-  <li>
-    <strong>Account data</strong> — your email address and authentication
-    details, held by our backend provider (Supabase).
-  </li>
-  <li>
-    <strong>Service Log photos</strong> — optional documentation photos you
-    attach when logging a service or inspection.
-  </li>
-  <li>
-    <strong>Postcode</strong> — used only to estimate shipping cost/time when
-    comparing parts prices; not a full address, not device location.
-  </li>
-</ul>
-<p>
-  We do not sell your data, and we do not use it for advertising — MongWorks
-  has no ad or analytics SDKs.
-</p>
+  <p class="lead">
+    MongWorks is a preventative bike-maintenance app. It projects a bike's
+    component wear from a member's real riding data via Strava, and prompts
+    service at the right time.
+  </p>
 
-<h2>Requesting account deletion</h2>
-<p>
-  To delete your MongWorks account and the data listed above, email
-  <a href="mailto:rudi751@gmail.com">rudi751@gmail.com</a> from the address
-  associated with your account, asking us to delete it.
-</p>
-<p>Once we process the request, we will:</p>
-<ul>
-  <li>Revoke your Strava connection directly with Strava (not just forget it on our side)</li>
-  <li>Delete your Bikes, Components, Service Log, and Gear Mappings</li>
-  <li>Delete your account and sign-in details</li>
-</ul>
-<p>
-  Any Bike/Component catalog corrections you contributed that have already
-  been shared with other members stay in place — they aren't personally
-  identifiable, and removing them would break other members' bikes that rely
-  on the same shared reference data.
-</p>
+  <section>
+    <h2>Data we collect</h2>
+    <p>To do this, MongWorks collects and stores:</p>
+    <ul>
+      <li>
+        <strong>Strava data</strong> — via Strava's OAuth connection (scope
+        <code>profile:read_all</code>, <code>activity:read_all</code>), we read
+        your ride/activity data (distance, elevation, timing, and location of
+        rides) and your registered gear (bike names), used to attribute wear to
+        the correct bike.
+      </li>
+      <li>
+        <strong>Account data</strong> — your email address and authentication
+        details, held by our backend provider (Supabase). Supabase is also where
+        the mailing list described below is stored — it is the same database, not
+        a separate service.
+      </li>
+      <li>
+        <strong>Service Log photos</strong> — optional documentation photos you
+        attach when logging a service or inspection.
+      </li>
+      <li>
+        <strong>Postcode</strong> — used only to estimate shipping cost/time when
+        comparing parts prices; not a full address, not device location.
+      </li>
+    </ul>
+    <p>
+      We do not sell your data, and we do not use it for advertising — MongWorks
+      has no ad or analytics SDKs.
+    </p>
+  </section>
 
-<h2>Support</h2>
-<p>
-  Using MongWorks with a connected Strava account and have a question or
-  ran into a problem — with the Strava connection, your bikes, or anything
-  else in the app? Email
-  <a href="mailto:rudi751@gmail.com">rudi751@gmail.com</a> and we'll help.
-</p>
+  <section>
+    <h2>The mailing list</h2>
+    <p>
+      MongWorks hasn't launched. If you gave us your email address on the welcome
+      page to hear when it does, that address sits in a mailing list which is
+      separate from the app: you don't have a MongWorks account yet, and joining
+      the list doesn't create one.
+    </p>
+    <p>When you submit that form, we record five things:</p>
+    <ul>
+      <li><strong>Your email address</strong> — so there is somewhere to send the announcement.</li>
+      <li><strong>The date and time you submitted it</strong> — the record of when you agreed to hear from us.</li>
+      <li><strong>Your IP address</strong> — part of that same record, and what we count to limit how often the form can be submitted from one place.</li>
+      <li><strong>Your browser's user agent</strong> — the identifying string your browser sends with the request.</li>
+      <li><strong>The page you came from</strong> — the referring URL, if your browser sent one.</li>
+    </ul>
+    <p>
+      The last four exist to show the sign-up was genuine and freely given. They
+      cannot be reconstructed after the fact, which is why they are captured at
+      the moment you submit rather than later.
+    </p>
+    <p>
+      Alongside those we store a fixed label naming which page the form was on,
+      so a second sign-up form added later can be told apart from this one. It
+      describes the page, not you.
+    </p>
+    <p>
+      This list is for marketing, and for nothing else. We will use it to send
+      you one email, on the day there is something to download. It is never
+      joined to app data, it is not used to target anything, and it is not shared
+      with or sold to anyone.
+    </p>
+    <p>
+      <strong>We don't send a confirmation email</strong>, because nothing in
+      MongWorks sends email yet. That means we cannot prove an address was
+      entered by the person who owns it — so if someone has put yours in without
+      asking, tell us and we will take it off.
+    </p>
+    <div class="action">
+      <p class="label">Coming off the list</p>
+      <p>
+        There is no unsubscribe link, because there is no mail going out to put
+        one in. Until there is, coming off the list is an email request: write to
+        <a href="mailto:rudi751@gmail.com">rudi751@gmail.com</a> asking to be
+        removed from the MongWorks mailing list, and we will delete the record —
+        address, timestamp, IP and all.
+      </p>
+      <p>
+        When there is finally an email to send, it will carry a working
+        unsubscribe link of its own.
+      </p>
+    </div>
+  </section>
 
-<div class="footer">MongWorks</div>
+  <section>
+    <h2>These web pages</h2>
+    <p>
+      Separately from the app, this page and the MongWorks welcome page are
+      ordinary web pages, and two things are worth saying about them.
+    </p>
+    <ul>
+      <li>
+        <strong>We set no cookies and run no analytics.</strong> We do not
+        measure or record your visit, and nothing you do while reading reaches
+        us — the sign-up form above is the only thing on either page that sends
+        us anything.
+      </li>
+      <li>
+        <strong>Two other companies see the request.</strong> The pages are
+        hosted on GitHub Pages, and they load the IBM Plex Mono typeface from
+        Google Fonts. Simply opening a page therefore makes requests to GitHub
+        and to Google which carry your IP address and your browser's user agent,
+        and both keep their own server logs. That is a property of how the pages
+        are hosted rather than something we ask for: we never see those logs, and
+        nothing from them reaches us or gets stored by us.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Requesting account deletion</h2>
+    <p>
+      To delete your MongWorks account and the data listed above, email
+      <a href="mailto:rudi751@gmail.com">rudi751@gmail.com</a> from the address
+      associated with your account, asking us to delete it.
+    </p>
+    <p>Once we process the request, we will:</p>
+    <ul>
+      <li>Revoke your Strava connection directly with Strava (not just forget it on our side)</li>
+      <li>Delete your Bikes, Components, Service Log, and Gear Mappings</li>
+      <li>Delete your account and sign-in details</li>
+    </ul>
+    <p>
+      Any Bike/Component catalog corrections you contributed that have already
+      been shared with other members stay in place — they aren't personally
+      identifiable, and removing them would break other members' bikes that rely
+      on the same shared reference data.
+    </p>
+    <p>
+      The mailing list is a separate request, because it is separate data — see
+      above. If you are on both and want both gone, say so and we will do both.
+    </p>
+  </section>
+
+  <section>
+    <h2>Support</h2>
+    <p>
+      Using MongWorks with a connected Strava account and have a question or
+      ran into a problem — with the Strava connection, your bikes, or anything
+      else in the app? Email
+      <a href="mailto:rudi751@gmail.com">rudi751@gmail.com</a> and we'll help.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <!--
+    `../` is /mongworks/ — the welcome page. That one is fine.
+
+    What is deliberately absent is a "Mong Rat" link, which the welcome page's footer
+    does carry. That would be `../../`, i.e. the site root, and until ticket 08's cutover
+    the root is still *this page's own forwarding address*: it meta-refreshes straight
+    back here, so the link would be a loop. Ticket 08 replaces the root with the Mong Rat
+    holding page; that is the point to add one.
+  -->
+  <p><a href="../">MongWorks</a></p>
+  <p><span class="powered label">Powered by Strava</span> · © 2026 Mong Rat</p>
+  <p>Last updated 9 October 2026</p>
+</footer>
 
 </body>
 </html>
