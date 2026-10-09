@@ -165,7 +165,8 @@
     <ul>
       <li>
         <strong>Strava data</strong> — via Strava's OAuth connection (scope
-        <code>profile:read_all</code>, <code>activity:read_all</code>), we read
+        <code>read</code>, <code>profile:read_all</code>,
+        <code>activity:read_all</code>), we read
         your ride/activity data (distance, elevation, timing, and location of
         rides) and your registered gear (bike names), used to attribute wear to
         the correct bike.
@@ -181,6 +182,13 @@
         attach when logging a service or inspection.
       </li>
       <li>
+        <strong>A notification token</strong> — if you allow notifications, your
+        device issues a token identifying where to deliver them, and we store it
+        so we can tell you when a part is due for service. It identifies the
+        installation of the app, not you, and turning notifications off in your
+        device settings stops it being used.
+      </li>
+      <li>
         <strong>Postcode</strong> — used only to estimate shipping cost/time when
         comparing parts prices; not a full address, not device location.
       </li>
@@ -188,6 +196,67 @@
     <p>
       We do not sell your data, and we do not use it for advertising — MongWorks
       has no ad or analytics SDKs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Who else sees it</h2>
+    <p>
+      Strava is where the riding data comes from, and Supabase is where
+      everything we keep is stored. Three features cannot work without asking
+      another company a question, so for each of those a specific piece of your
+      data goes to a specific place:
+    </p>
+    <ul>
+      <li>
+        <strong>OpenWeather</strong> — the coordinates and time of each ride.
+        Wear depends heavily on what you rode through, so for every ride we look
+        up the weather at that place and hour. This is the most revealing thing
+        we send anyone: it is where and when you were riding. It goes without
+        your email or anything else tying it to your account, and
+        <strong>we never store it</strong> — there is no column for a coordinate
+        anywhere in our database. Ride locations are read from Strava, used for
+        the lookup, and let go.
+      </li>
+      <li>
+        <strong>eBay</strong> — your postcode, attached to the request for parts
+        prices. That is what makes the shipping cost and delivery window
+        specific to where you are rather than a national average. Your postcode
+        is not sent to any other retailer.
+      </li>
+      <li>
+        <strong>Expo</strong> — the notification token and the text of the
+        notification, because Expo is the service that delivers push messages to
+        your device. Expo issues that token in the first place, and hands each
+        message on to Google's or Apple's push service to get it to your phone,
+        so those see it in passing too. Be aware what the message itself
+        contains: it names the bike as <em>you</em> named it, and says something
+        on it is due for service. That is the entire message — but if you have
+        put your own name in a bike's nickname, it travels with it. The app also
+        asks Expo on launch whether an update is available, which shows Expo
+        your IP address and app version.
+      </li>
+    </ul>
+    <p>
+      When MongWorks compares parts prices it searches retailers for the part in
+      question: today that is eBay, and Bicycles Online through the affiliate
+      network Impact.com. An Amazon integration exists in the code but is
+      switched off; if it is ever turned on it will receive the same thing the
+      others do. Those searches carry the name of the part and nothing about
+      you, with the single exception of the postcode sent to eBay above.
+    </p>
+    <p>
+      Beyond what each of those bullets describes, none of these companies
+      receives your email address, your Strava identity, or your service
+      history. We have no agreement with any of them to share your data, and we
+      do not sell it to them or to anyone else.
+    </p>
+    <p>
+      One thing worth saying plainly, because it explains why we talk to
+      retailers at all: the links MongWorks shows you are affiliate links, so if
+      you buy a part through one, we may earn a commission. It costs you nothing
+      and it does not change which parts we tell you are worn — but you should
+      know the incentive exists.
     </p>
   </section>
 
@@ -281,6 +350,8 @@
     <ul>
       <li>Revoke your Strava connection directly with Strava (not just forget it on our side)</li>
       <li>Delete your Bikes, Components, Service Log, and Gear Mappings</li>
+      <li>Delete your Service Log photos</li>
+      <li>Delete your stored postcode and your notification tokens</li>
       <li>Delete your account and sign-in details</li>
     </ul>
     <p>
