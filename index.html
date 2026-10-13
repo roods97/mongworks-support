@@ -3,46 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MongWorks — Privacy &amp; Support</title>
+<title>Mong Rat</title>
+<meta name="description" content="Mong Rat builds MongWorks — know what your bike needs before it needs it.">
+<link rel="canonical" href="https://mong-rat.com/">
 
 <!--
-  This URL is cited in a live Strava athlete-capacity review submission and is destined
-  for the Play Console listing, so it must keep resolving to the privacy and support
-  document. The page itself has moved to mongworks/privacy/ under the new site
-  structure; this is its forwarding address.
+  The parent brand's root, and deliberately almost nothing: it reserves Mong Rat
+  without inventing it. A real parent-brand identity — logo, palette, copy, a
+  proper site — is explicitly out of scope for this effort, so this page carries
+  no mark of its own and borrows none from the child. Type only; the mechanic-rat
+  roundel belongs to MongWorks and using it here would make the parent look like
+  a relabelling of the child.
 
-  GitHub Pages serves static files and cannot issue a 301, so the redirect is a meta
-  refresh plus a canonical link, with a real visible link underneath for anyone the
-  refresh doesn't carry. Relative paths throughout: before the DNS cutover this is
-  served from /mongworks-support/, after it from the domain root.
+  That includes the favicon, whose absence is deliberate rather than forgotten —
+  the other three pages point one at `assets/rat.webp`, and this page pointing at
+  the same file would be the borrow this paragraph just refused, in the one place
+  the brands sit side by side in a tab strip. The browser falls back to its own
+  blank page icon, which is the correct amount of identity for a brand that does
+  not have one yet.
 
-  Ticket 08 replaces this file with the Mong Rat holding page, but only once the Strava
-  review has concluded.
+  Not a redirect to /mongworks/ either. That would collapse parent into child,
+  and the apex is the only place the distinction can be stated.
+
+  Light ground rather than the welcome page's dark one. The welcome page is dark
+  because the workshop illustration is white line art that only reads on a dark
+  ground; the two text pages here are light, and this is a text page.
+
+  The "Privacy & support" link in the footer is doing a specific job, not just
+  being tidy. This file used to be the privacy page's forwarding address, and
+  https://roods97.github.io/mongworks-support/ — published in the Play Console
+  and cited to Strava as the Support URL — is this path. Once the CNAME beside
+  this file is live, GitHub Pages 301s that address here, so this page is what a
+  reviewer following the cited link now sees. One visible click to the policy is
+  the floor; re-pointing those citations at https://mong-rat.com/mongworks/privacy/
+  is the real fix and is on the cutover checklist.
 -->
-<meta http-equiv="refresh" content="0; url=mongworks/privacy/">
-<link rel="canonical" href="mongworks/privacy/">
-<meta name="robots" content="noindex">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&display=swap">
 
 <style>
-  body {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    max-width: 38rem;
-    margin: 0 auto;
-    padding: 4rem 1.25rem;
-    line-height: 1.6;
-    color: #171B1F;
-    background: #F6F7F8;
+  /* Graphite & Lime — the app's own tokens, which live in the app repo's
+     tailwind.config.js. The other three pages each carry their own copy of this
+     block; naming the source rather than a sibling page is deliberate, so the
+     four do not end up describing each other in a chain that rots the first time
+     one of them changes. Extracting a shared stylesheet is a refactor of all four
+     pages, not a step in a DNS cutover. */
+  :root {
+    --graphite-900: #171B1F;
+    --graphite-600: #4B525B;
+    --steel-300: #C7CCD1;
+    --steel-100: #EDEFF1;
+    --lime: #B4F01E;
+    --lime-dark: #5D7A0E;
+    --font: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+    --ground:   var(--steel-100);
+    --ink:      var(--graphite-900);
+    --ink-soft: var(--graphite-600);
+    --rule:     var(--steel-300);
   }
-  h1 { font-size: 1.25rem; margin: 0 0 0.75rem; }
-  p { margin: 0 0 1rem; }
-  a { color: #5D7A0E; }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--ground); }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: var(--font); font-size: 15.5px; line-height: 1.65;
+    background: var(--ground); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    display: flex; flex-direction: column;
+  }
+  h1 { margin: 0; font-weight: 700; letter-spacing: -0.03em; }
+  p { margin: 0; }
+  a { color: var(--ink); text-underline-offset: 3px; }
+  :focus-visible { outline: 3px solid var(--lime-dark); outline-offset: 3px; }
+
+  main {
+    flex: 1;
+    width: 100%; max-width: 560px; margin-inline: auto;
+    padding-inline: 20px; padding-block: clamp(72px, 18vw, 150px) 48px;
+  }
+  h1 { font-size: clamp(30px, 8vw, 44px); line-height: 1.1; }
+  .so-far { margin-top: 14px; color: var(--ink-soft); font-size: 14px; }
+
+  .product {
+    display: block;
+    margin-top: clamp(40px, 9vw, 64px);
+    padding-top: 26px;
+    border-top: 1px solid var(--rule);
+    text-decoration: none;
+  }
+  /* Both halves are spans inside the one anchor, so the whole block is a single
+     link and a single tab stop — but they have to be laid out as blocks or they
+     run together on one line. */
+  .product-name {
+    display: block;
+    font-size: clamp(21px, 5vw, 27px); font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  /* The arrow is punctuation on the link, not content: a screen reader reading
+     "MongWorks right arrow" gains nothing over "MongWorks". */
+  .product-name .arrow { color: var(--lime-dark); }
+  .product-line { display: block; margin-top: 8px; color: var(--ink-soft); font-size: 15px; }
+  .product:hover .product-name, .product:focus-visible .product-name { text-decoration: underline; }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-block: 26px 40px;
+    color: var(--ink-soft); font-size: 13px;
+  }
+  .footer-row {
+    width: 100%; max-width: 560px; margin-inline: auto; padding-inline: 20px;
+  }
 </style>
 </head>
 <body>
 
-<h1>MongWorks — Privacy &amp; Support</h1>
-<p>This page has moved to <a href="mongworks/privacy/">mongworks/privacy</a>.</p>
-<p>You should be redirected automatically. If you aren't, follow the link above.</p>
+<main>
+  <h1>Mong Rat</h1>
+  <p class="so-far">One product so far.</p>
+
+  <a class="product" href="mongworks/">
+    <span class="product-name">MongWorks <span class="arrow" aria-hidden="true">→</span></span>
+    <span class="product-line">Know what your bike needs before it needs it.</span>
+  </a>
+</main>
+
+<footer>
+  <div class="footer-row">
+    <p><a href="mongworks/privacy/">Privacy &amp; support</a> · © 2026 Mong Rat</p>
+  </div>
+</footer>
 
 </body>
 </html>

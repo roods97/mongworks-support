@@ -7,19 +7,18 @@
 <meta name="description" content="What MongWorks collects, why, who stores it, and how to ask for it back — plus how to get help.">
 
 <!--
-  Deliberately indexable, unlike the welcome page and the thanks page. This URL is cited
-  in a live Strava athlete-capacity review submission and is destined for the Play
-  Console listing and Data Safety form, so it is a document under review: changes to it
-  are additive only, and no existing disclosure gets removed or weakened. The title is
-  held verbatim for the same reason — it is the string the Strava submission names.
--->
+  Deliberately indexable, and the page whose address is quoted elsewhere: it is cited to
+  Strava as the Support URL and destined for the Play Console listing and Data Safety
+  form. So the canonical is absolute — the point is to name *which host* owns the
+  document, now that github.io 301s here rather than serving a rival copy of it.
 
-<!-- The one page here with a canonical of its own: the root's canonical points at this
-     URL, and the cutover is pending, so the page that most needs to name its preferred
-     address is this one. Absolute rather than relative, because the point is to say
-     *which host* owns the document. Ticket 08 swaps it to the custom domain with the
-     DNS change, same as the welcome page's. -->
-<link rel="canonical" href="https://roods97.github.io/mongworks-support/mongworks/privacy/">
+  An earlier version of this comment said changes here had to be additive only, because
+  a Strava review was in flight. That review had never started; the constraint was never
+  real, and tickets 06 and 07 were written under it. The page can be changed on its
+  merits. What has not changed is that it is a published privacy policy, so weakening a
+  disclosure is still a decision, not an edit.
+-->
+<link rel="canonical" href="https://mong-rat.com/mongworks/privacy/">
 
 <link rel="icon" href="../assets/rat.webp">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -379,16 +378,7 @@
 </main>
 
 <footer>
-  <!--
-    `../` is /mongworks/ — the welcome page. That one is fine.
-
-    What is deliberately absent is a "Mong Rat" link, which the welcome page's footer
-    does carry. That would be `../../`, i.e. the site root, and until ticket 08's cutover
-    the root is still *this page's own forwarding address*: it meta-refreshes straight
-    back here, so the link would be a loop. Ticket 08 replaces the root with the Mong Rat
-    holding page; that is the point to add one.
-  -->
-  <p><a href="../">MongWorks</a></p>
+  <p><a href="../">MongWorks</a> · <a href="../../">Mong Rat</a></p>
   <p><span class="powered label">Powered by Strava</span> · © 2026 Mong Rat</p>
   <p>Last updated 9 October 2026</p>
 </footer>
